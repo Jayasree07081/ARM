@@ -1,0 +1,27 @@
+name: Deploy ARM Template
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy ARM template
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: '98f0d041-99d0-4af3-8981-62229e38ccb6'
+        resourceGroupName: 'VM'
+        template: './VM.json'
+        parameters: 'VM' # Optional: add parameters file or inline
